@@ -7,17 +7,10 @@ const { Sequelize } = require('sequelize')
 const dotenv = require('dotenv')
 
 
-const PORT = process.env.PORT || 5000
+const PORT = process.env.DB_HOST || 3001
 const app = express()
 
-const sequelize = new Sequelize('postgres://user:pass@example.com:5432/dbname')
 
-try {
-    await sequelize.authenticate()
-    console.log('Соединение с БД было успешно установлено')
-  } catch (e) {
-    console.log('Невозможно выполнить подключение к БД: ', e)
-}
 
 
 
@@ -30,10 +23,6 @@ app.use('/', function (req, res, next) {
 });
 app.use(express.json())
 app.use('/', create, deleteTodo, getTodos, update)
-app.listen(PORT, () => console.log('Its working ' + PORT))
 
-app.get('/', (req, res) => {
-    res.send('Hello!!11')
-})
 
 app.listen(PORT, () => console.log('Its working ' + PORT))

@@ -25,4 +25,4 @@ function read () {
     })
 }
 
-export { write, read }
+module.exports = { write, read }

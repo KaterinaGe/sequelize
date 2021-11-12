@@ -1,17 +1,20 @@
 const {write, read} = require("../helper.js")
 const express = require('express')
+const db = require('../models/index.js')
 
 const deleteTodo = express.Router()
 
 deleteTodo.delete('/todo/:uuid', async (req, res) => {
     try {        
-        const todos = await read()
-        const filteredTodos = todos.filter((todo) => todo.uuid !== req.params.uuid)
-        await write(filteredTodos)
-        res.sendStatus(204);
+        await db.ToDo.destroy({
+            where: {
+                uuid: req.params.uuid
+            }
+        })
+        res.send('Todo deleted')
     } catch (e) {
         res.status(500).send(e.message)
     }
 })
 
-export default deleteTodo
+module.exports = deleteTodo

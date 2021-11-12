@@ -1,26 +1,20 @@
 const { write, read } = require("../helper.js")
 const { uuid } = require("uuid")
 const express = require('express')
+const db = require('../models/index.js')
 
 const create = express.Router()
 
 create.post('/todo', async (req, res) => {
     try {
-        let todos = []
-        const todo = {
-            uuid: uuid(),
-            name: req.body.name,
-            done: false,
-            created_at: String(new Date())
-        }
-        todos = await read()
-        todos.push(todo);
-        await write(todos)
+        const todo = await db.ToDo.create({ name: req.body.name, owner: req.body.owner })
+
         res.send({todo});              
     } catch (e) {
+        console.log(e)
         res.status(500).send(e.message)
     }
 })
 
 
-export default create;
+module.exports = create;
